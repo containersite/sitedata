@@ -16,17 +16,6 @@ body {
     margin: 0 auto;
   }
 
-  /* Thumbnail */
-  .thumbnail {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image: url('https://i.postimg.cc/2yzcv3Q7/Untitled-Project-17.jpg');
-    background-repeat: no-repeat;
-    background-size: 500px 100%; /* desktop fixed size */
-    background-position: center;
-    filter: blur(0px);
-    z-index: 1;
-  }
 
   /* Adjust thumbnail for tablets */
   @media (max-width: 768px) {
