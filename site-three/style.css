@@ -1,0 +1,167 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000;
+  }
+
+  /* Player container */
+  .player-container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    height: 0;
+    padding-bottom: 52.86%; /* desktop 21:9 */
+    background-color: #000;
+    overflow: hidden;
+    margin: 0 auto;
+  }
+
+  /* Thumbnail */
+  .thumbnail {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url('https://i.postimg.cc/2yzcv3Q7/Untitled-Project-17.jpg');
+    background-repeat: no-repeat;
+    background-size: 500px 100%; /* desktop fixed size */
+    background-position: center;
+    filter: blur(0px);
+    z-index: 1;
+  }
+
+  /* Adjust thumbnail for tablets */
+  @media (max-width: 768px) {
+    .thumbnail {
+      background-size: 250px 280px; /* tablet */
+    }
+    .player-container { padding-bottom: 56.25%; } /* 16:9 ratio */
+  }
+
+  /* Adjust thumbnail for mobile phones */
+  @media (max-width: 480px) {
+    .thumbnail {
+      background-size: 240px 100% /* small phone */
+    }
+    .player-container { padding-bottom: 66.66%; } /* taller for mobile */
+  }
+
+  /* Overlay & play button */
+  .overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+  }
+
+  .play-button {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 4px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255,255,255,0.15);
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 3;
+    touch-action: manipulation;
+  }
+
+  .play-button:hover {
+    transform: scale(1.1);
+    background-color: rgba(255,255,255,0.25);
+  }
+
+  .play-button::before {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 20px solid white;
+    border-top: 11px solid transparent;
+    border-bottom: 11px solid transparent;
+  }
+
+  /* Control bar */
+  .control-bar {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    color: white;
+    z-index: 2;
+  }
+
+  .control-left, .control-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  /* Icons */
+  .icon {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+  }
+
+  .icon-play { mask-image: url('https://img.icons8.com/ios-filled/50/play--v1.png'); -webkit-mask-image: url('https://img.icons8.com/ios-filled/50/play--v1.png'); }
+  .icon-volume { mask-image: url('https://img.icons8.com/ios-filled/50/medium-volume.png'); -webkit-mask-image: url('https://img.icons8.com/ios-filled/50/medium-volume.png'); }
+  .icon-settings { mask-image: url('https://img.icons8.com/ios-filled/50/settings--v1.png'); -webkit-mask-image: url('https://img.icons8.com/ios-filled/50/settings--v1.png'); }
+  .icon-resize { mask-image: url('https://i.postimg.cc/y8Mq6QbN/resize-button.png'); -webkit-mask-image: url('https://i.postimg.cc/y8Mq6QbN/resize-button.png'); }
+
+  .watch-label { font-weight: bold; font-size: 18px; }
+  .red-dot { width: 10px; height: 10px; background-color: red; border-radius: 50%; }
+
+  /* Loading spinner */
+  .loading-spinner {
+    position: absolute;
+    top: 46.5%;
+    left: 46.5%;
+    transform: translate(-50%, -50%);
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #FF0000;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    animation: spin 2s linear infinite;
+    z-index: 3;
+    display: none;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Responsive play button & controls */
+  @media (max-width: 768px) {
+    .play-button { width: 70px; height: 70px; }
+    .play-button::before { border-left: 15px solid white; border-top: 8px solid transparent; border-bottom: 8px solid transparent; }
+    .control-bar { height: 45px; padding: 0 15px; }
+    .watch-label { font-size: 14px; }
+    .icon { width: 18px; height: 18px; }
+  }
+
+  @media (max-width: 480px) {
+    .play-button { width: 60px; height: 60px; }
+    .play-button::before { border-left: 12px solid white; border-top: 7px solid transparent; border-bottom: 7px solid transparent; }
+    .control-bar { height: 40px; padding: 0 10px; }
+    .watch-label { font-size: 12px; }
+    .icon { width: 16px; height: 16px; }
+    .control-left, .control-right { gap: 10px; }
+  }
