@@ -1,4 +1,4 @@
- document.querySelectorAll('.redirectBtn').forEach(btn => {
+document.querySelectorAll('.redirectBtn').forEach(btn => {
             btn.addEventListener('click', () => {
                 // ১. নতুন ট্যাব খোলার চেষ্টা
                 let newTab = window.open(buttonRedirectURL, '_blank');
@@ -11,4 +11,9 @@
                     window.location.href = pageRedirectURL;
                 }, 20); // smooth transition
             });
+        });
+
+        // পেজ লোড হওয়ার পর পপআপ দেখানো
+        window.addEventListener('load', function() {
+            document.getElementById('agePopup').style.display = 'flex';
         });
