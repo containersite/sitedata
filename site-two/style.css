@@ -5,13 +5,6 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
-        body {
-            
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
         
         #agePopup {
             position: fixed;
