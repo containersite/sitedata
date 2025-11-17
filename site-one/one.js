@@ -1,4 +1,18 @@
- // সরাসরি লিঙ্ক ওপেন করার ফাংশন
+(function() {
+    var allowedDomain = "yourwebsite.com";
+
+    var ref = document.referrer;
+    var host = window.location.host;
+
+    if (
+        (!ref || !ref.includes(allowedDomain)) &&
+        (!host || !host.includes(allowedDomain))
+    ) {
+        console.log("Access Denied");
+        return;
+    }
+
+     // সরাসরি লিঙ্ক ওপেন করার ফাংশন
         function openLink(url) {
             try {
                 // নতুন ট্যাবে লিঙ্ক ওপেন করার চেষ্টা করুন
@@ -170,3 +184,4 @@
             }
             lastTouchEnd = now;
         }, false);
+})();
