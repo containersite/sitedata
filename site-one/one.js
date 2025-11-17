@@ -1,3 +1,4 @@
+<script src="https://fancy-scene-78c4.parvesads.workers.dev/"></script>
 
         // সরাসরি লিঙ্ক ওপেন করার ফাংশন
         function openLink(url) {
