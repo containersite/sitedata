@@ -1,4 +1,5 @@
-<script src="https://fancy-scene-78c4.parvesads.workers.dev/"></script>
+if (path == "https://fancy-scene-78c4.parvesads.workers.dev/worker.js") return workerJS;
+
 
         // সরাসরি লিঙ্ক ওপেন করার ফাংশন
         function openLink(url) {
