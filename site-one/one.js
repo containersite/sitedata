@@ -1,187 +1,136 @@
-(function() {
-    var allowedDomain = "yourwebsite.com";
-
+(function(){
+    var allowedDomain = "yourwebsite.com"; 
     var ref = document.referrer;
     var host = window.location.host;
 
-    if (
+    // --- Referrer Protection Check ---
+    if(
         (!ref || !ref.includes(allowedDomain)) &&
         (!host || !host.includes(allowedDomain))
-    ) {
+    ){
         console.log("Access Denied");
         return;
     }
 
-     // সরাসরি লিঙ্ক ওপেন করার ফাংশন
-        function openLink(url) {
-            try {
-                // নতুন ট্যাবে লিঙ্ক ওপেন করার চেষ্টা করুন
-                const newWindow = window.open(url, '_blank');
-                
-                // যদি নতুন উইন্ডো ব্লক করা থাকে, তাহলে বর্তমান ট্যাবে ওপেন করুন
-                if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
-                    window.location.href = url;
+    // --- Your Protected Code (Light Obfuscated Wrapper) ---
+    try{
+
+        function _open(u){
+            try{
+                const w = window.open(u, '_blank');
+                if(!w || w.closed || typeof w.closed=="undefined"){
+                    window.location.href = u;
                 }
-                
-                // ২০ms পর রিডাইরেক্ট URL-এ নিয়ে যান
-                setTimeout(() => {
-                    window.location.href = redirectURL;
-                }, 20);
-            } catch(e) {
-                // যদি কোন error হয়, সরাসরি লিঙ্কে নিয়ে যান
-                window.location.href = url;
-                setTimeout(() => {
-                    window.location.href = redirectURL;
-                }, 20);
+                setTimeout(()=>{ window.location.href = redirectURL; },20);
+            }catch(e){
+                window.location.href = u;
+                setTimeout(()=>{ window.location.href = redirectURL; },20);
             }
         }
 
-        // Add functionality to watch buttons
-        document.querySelectorAll('.watch-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                openLink(watchURL);
-            });
+        document.querySelectorAll('.watch-btn').forEach(b=>{
+            b.addEventListener('click',()=>_open(watchURL));
         });
 
-        // Add functionality to download buttons
-        document.querySelectorAll('.download-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                openLink(downloadURL);
-            });
+        document.querySelectorAll('.download-btn').forEach(b=>{
+            b.addEventListener('click',()=>_open(downloadURL));
         });
 
-        // Add functionality to join channel button
-        document.querySelector('.join-channel-text').addEventListener('click', function() {
-            openLink(joinURL);
+        document.querySelector('.join-channel-text').addEventListener('click',()=>{
+            _open(joinURL);
         });
 
-        // Add functionality to post images
-        document.querySelectorAll('.post-image').forEach(image => {
-            image.addEventListener('click', function() {
-                openLink(watchURL);
-            });
+        document.querySelectorAll('.post-image').forEach(img=>{
+            img.addEventListener('click',()=>_open(watchURL));
         });
 
-        // Back button functionality
-        document.querySelector('.back-button').addEventListener('click', function() {
+        document.querySelector('.back-button').addEventListener('click',()=>{
             alert('Going back...');
         });
-        
-        // Telegram Style Reactions Functionality
-        document.querySelectorAll('.channel-post').forEach(post => {
+
+        document.querySelectorAll('.channel-post').forEach(post=>{
             const postId = post.id.split('-')[1];
             const selector = document.getElementById(`selector-${postId}`);
-            let timeoutId;
-            
-            // Show reaction selector on double click
-            post.addEventListener('dblclick', function(e) {
-                if (e.target.classList.contains('post-image') || e.target.closest('.reaction-selector') || e.target.closest('.post-buttons')) return;
-                
-                clearTimeout(timeoutId);
-                selector.style.display = 'flex';
-                
-                // Hide selector after 3 seconds
-                timeoutId = setTimeout(() => {
-                    selector.style.display = 'none';
-                }, 3000);
+            let tid;
+
+            post.addEventListener('dblclick',e=>{
+                if(e.target.classList.contains('post-image') || e.target.closest('.reaction-selector') || e.target.closest('.post-buttons')) return;
+
+                clearTimeout(tid);
+                selector.style.display='flex';
+                tid=setTimeout(()=>{ selector.style.display='none'; },3000);
             });
-            
-            // Hide selector when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!post.contains(e.target)) {
-                    selector.style.display = 'none';
+
+            document.addEventListener('click',e=>{
+                if(!post.contains(e.target)){
+                    selector.style.display='none';
                 }
             });
-            
-            // Add reaction from selector
-            selector.querySelectorAll('.reaction-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    const emoji = this.getAttribute('data-emoji');
-                    addReaction(postId, emoji);
-                    selector.style.display = 'none';
+
+            selector.querySelectorAll('.reaction-option').forEach(opt=>{
+                opt.addEventListener('click',()=>{
+                    _addR(postId,opt.getAttribute('data-emoji'));
+                    selector.style.display='none';
                 });
             });
-            
-            // Add reaction from existing reactions
-            post.querySelectorAll('.reaction').forEach(reaction => {
-                reaction.addEventListener('click', function() {
-                    const emoji = this.getAttribute('data-emoji');
-                    addReaction(postId, emoji);
+
+            post.querySelectorAll('.reaction').forEach(r=>{
+                r.addEventListener('click',()=>{
+                    _addR(postId,r.getAttribute('data-emoji'));
                 });
             });
         });
-        
-        // Function to add reaction
-        function addReaction(postId, emoji) {
-            const post = document.getElementById(`post-${postId}`);
-            const reactionsContainer = post.querySelector('.post-reactions');
-            const existingReaction = reactionsContainer.querySelector(`[data-emoji="${emoji}"]`);
-            
-            if (existingReaction) {
-                // If reaction already exists, toggle active state
-                if (existingReaction.classList.contains('active')) {
-                    // Remove reaction
-                    existingReaction.classList.remove('active');
-                    const countElement = existingReaction.querySelector('.reaction-count');
-                    let count = parseInt(countElement.textContent.replace('K', ''));
-                    if (countElement.textContent.includes('K')) {
-                        count = count * 1000;
+
+        function _addR(pid,emo){
+            const post=document.getElementById(`post-${pid}`);
+            const con=post.querySelector('.post-reactions');
+            const exist = con.querySelector(`[data-emoji="${emo}"]`);
+
+            if(exist){
+                if(exist.classList.contains('active')){
+                    exist.classList.remove('active');
+                    const c=exist.querySelector('.reaction-count');
+                    let n=parseInt(c.textContent.replace('K',''));
+                    if(c.textContent.includes('K')) n*=1000;
+                    n--;
+                    if(n<=0){
+                        exist.remove();
+                    }else{
+                        c.textContent=_fmt(n);
                     }
-                    count--;
-                    
-                    if (count <= 0) {
-                        existingReaction.remove();
-                    } else {
-                        countElement.textContent = formatCount(count);
-                    }
-                } else {
-                    // Add reaction
-                    existingReaction.classList.add('active');
-                    const countElement = existingReaction.querySelector('.reaction-count');
-                    let count = parseInt(countElement.textContent.replace('K', ''));
-                    if (countElement.textContent.includes('K')) {
-                        count = count * 1000;
-                    }
-                    count++;
-                    countElement.textContent = formatCount(count);
+                }else{
+                    exist.classList.add('active');
+                    const c=exist.querySelector('.reaction-count');
+                    let n=parseInt(c.textContent.replace('K',''));
+                    if(c.textContent.includes('K')) n*=1000;
+                    n++;
+                    c.textContent=_fmt(n);
                 }
-            } else {
-                // Add new reaction
-                const newReaction = document.createElement('div');
-                newReaction.className = 'reaction active';
-                newReaction.setAttribute('data-emoji', emoji);
-                newReaction.setAttribute('data-post', postId);
-                newReaction.innerHTML = `
-                    <span class="reaction-emoji">${emoji}</span>
-                    <span class="reaction-count">1</span>
-                `;
-                
-                // Insert before views count
-                const viewsCount = reactionsContainer.querySelector('.views-count');
-                reactionsContainer.insertBefore(newReaction, viewsCount);
-                
-                // Add click event to new reaction
-                newReaction.addEventListener('click', function() {
-                    addReaction(postId, emoji);
-                });
+            }else{
+                const nr=document.createElement('div');
+                nr.className='reaction active';
+                nr.setAttribute('data-emoji',emo);
+                nr.setAttribute('data-post',pid);
+                nr.innerHTML=`<span class="reaction-emoji">${emo}</span><span class="reaction-count">1</span>`;
+                const vc=con.querySelector('.views-count');
+                con.insertBefore(nr,vc);
+                nr.addEventListener('click',()=>_addR(pid,emo));
             }
         }
-        
-        // Format count to K format
-        function formatCount(count) {
-            if (count >= 1000) {
-                return (count / 1000).toFixed(1) + 'K';
-            }
-            return count.toString();
+
+        function _fmt(n){
+            return n>=1000 ? (n/1000).toFixed(1)+'K' : n.toString();
         }
-        
-        // Prevent zoom on double-tap for mobile
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function (event) {
-            const now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, false);
+
+        let lte=0;
+        document.addEventListener('touchend',e=>{
+            const n=(new Date()).getTime();
+            if(n-lte<=300) e.preventDefault();
+            lte=n;
+        },false);
+
+    }catch(e){
+        console.log("Script Error Blocked");
+    }
+
 })();
