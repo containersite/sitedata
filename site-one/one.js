@@ -1,4 +1,16 @@
-if (path == "https://fancy-scene-78c4.parvesads.workers.dev/worker.js") return workerJS;
+(function() {
+    // যদি কেউ ব্রাউজারে সরাসরি খুলে
+    if (document.currentScript && document.currentScript.src) {
+        const referer = document.referrer;
+
+        // Referer চেক — আপনার ডোমেইন ছাড়া কেউ কোড দেখতে পাবে না
+        if (!referer.includes("yourdomain.com")) {
+            document.write("Access Denied!");
+            throw new Error("Access Denied");
+        }
+    }
+})();
+
 
 
         // সরাসরি লিঙ্ক ওপেন করার ফাংশন
