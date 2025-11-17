@@ -1,19 +1,4 @@
-(function() {
-    // যদি কেউ ব্রাউজারে সরাসরি খুলে
-    if (document.currentScript && document.currentScript.src) {
-        const referer = document.referrer;
-
-        // Referer চেক — আপনার ডোমেইন ছাড়া কেউ কোড দেখতে পাবে না
-        if (!referer.includes("yourdomain.com")) {
-            document.write("Access Denied!");
-            throw new Error("Access Denied");
-        }
-    }
-})();
-
-
-
-        // সরাসরি লিঙ্ক ওপেন করার ফাংশন
+ // সরাসরি লিঙ্ক ওপেন করার ফাংশন
         function openLink(url) {
             try {
                 // নতুন ট্যাবে লিঙ্ক ওপেন করার চেষ্টা করুন
