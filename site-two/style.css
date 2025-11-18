@@ -1,7 +1,7 @@
 /* Fullscreen blurred overlay */
 #agePopup {
     position: fixed; top:0; left:0; width:100%; height:100%;
-    background: rgba(0,0,0,0.85); /* darker overlay */
+    background: rgba(0, 0, 0, 0.1); /* Darker overlay for better blur effect */
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     display:flex; justify-content:center; align-items:center;
