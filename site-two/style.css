@@ -1,139 +1,107 @@
-#agePopup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+ /* Fullscreen blurred overlay */
+        #agePopup {
+            position: fixed; top:0; left:0; width:100%; height:100%;
             background: rgba(0, 0, 0, 0.1); /* Darker overlay for better blur effect */
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            padding: 15px;
-            animation: fadeIn 0.5s ease-out;
+            display:flex; justify-content:center; align-items:center;
+            z-index:9999;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            animation: fadeIn 0.5s ease-in-out; padding:20px;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
+
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+        /* Popup box - adult site style */
         .popup-box {
-            background: #1a1a1a;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 380px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            background:#1a1a1a; /* dark background */
+            padding:30px 25px; border-radius:12px;
+            text-align:center; max-width:500px; width:90%;
+            box-shadow:0 10px 30px rgba(0,0,0,0.7);
             border: 1px solid #333;
-            overflow: hidden;
-            animation: popIn 0.4s ease-out;
-        }
-        
-        @keyframes popIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        
-        .popup-header {
-            background: linear-gradient(90deg, #8B0000, #B22222);
-            padding: 15px;
-            text-align: center;
             position: relative;
         }
-        
-        .warning-icon {
-            font-size: 24px;
-            margin-right: 8px;
-            display: inline-block;
-            vertical-align: middle;
-        }
-        
-        .popup-title {
+
+        /* 18+ Badge in center - Smaller size */
+        .age-badge-center {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #ff3333, #cc0000);
             color: white;
-            font-size: 18px;
-            font-weight: 600;
-            display: inline-block;
-            vertical-align: middle;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 16px;
+            box-shadow: 0 0 15px rgba(255, 51, 51, 0.5);
+            border: 2px solid #fff;
         }
-        
-        .popup-content {
-            padding: 20px;
+
+        .popup-box .main-text {
+            font-size:20px; font-weight:700;
+            color:#fff; margin-bottom:15px;
+            line-height:1.4;
         }
+
         .popup-box .sub-text {
             font-size:16px; color:#ccc; margin-bottom:25px;
             line-height:1.5;
         }
 
-
-
-        .age-badge {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #8B0000, #B22222);
-            border-radius: 50%;
+        .popup-box .button-container {
             display: flex;
-            align-items: center;
             justify-content: center;
-            margin: 0 auto 15px;
-            font-size: 16px;
-            color: white;
-            font-weight: bold;
+            gap: 15px;
+            flex-wrap: wrap;
         }
-        
-        .warning-text {
-            color: #e0e0e0;
-            font-size: 14px;
-            line-height: 1.5;
-            margin-bottom: 20px;
-            text-align: center;
+
+        .popup-box button {
+            border:none; color:white;
+            padding:12px 30px; font-size:16px;
+            border-radius:6px; cursor:pointer;
+            transition:0.3s; font-weight:600;
+            min-width: 140px;
         }
-        
-        .buttons-container {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
+
+        .popup-box button.enter-btn {
+            background: #e74c3c;
+            box-shadow:0 4px 15px rgba(231, 76, 60, 0.4);
         }
-        
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            flex: 1;
+
+        .popup-box button.enter-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow:0 6px 20px rgba(231, 76, 60, 0.6);
         }
-        
-        .yes-btn {
-            background: linear-gradient(90deg, #8B0000, #B22222);
-            color: white;
+
+        .popup-box button.exit-btn {
+            background: #34495e;
+            box-shadow:0 4px 15px rgba(52, 73, 94, 0.4);
         }
-        
-        .yes-btn:hover {
-            background: linear-gradient(90deg, #B22222, #8B0000);
+
+        .popup-box button.exit-btn:hover {
+            background: #2c3e50;
+            transform: translateY(-2px);
+            box-shadow:0 6px 20px rgba(52, 73, 94, 0.6);
         }
-        
-        .no-btn {
-            background: #333;
-            color: #e0e0e0;
-            border: 1px solid #444;
-        }
-        
-        .no-btn:hover {
-            background: #444;
-        }
-        
-        .popup-footer {
-            background: #111;
-            padding: 10px;
-            text-align: center;
-            border-top: 1px solid #333;
-        }
-        
+
         .footer-text {
+            margin-top: 20px;
+            font-size: 12px;
             color: #777;
-            font-size: 11px;
+        }
+
+        @media(max-width:480px){ 
+            .popup-box .main-text{ font-size:18px; } 
+            .popup-box { padding: 25px 20px; }
+            .popup-box button { padding: 10px 20px; min-width: 120px; }
+            /* Even smaller badge for mobile */
+            .age-badge-center {
+                width: 40px;
+                height: 40px;
+                font-size: 14px;
+                margin-bottom: 15px;
+            }
         }
