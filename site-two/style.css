@@ -61,7 +61,13 @@
         .popup-content {
             padding: 20px;
         }
-        
+        .popup-box .sub-text {
+            font-size:16px; color:#ccc; margin-bottom:25px;
+            line-height:1.5;
+        }
+
+
+
         .age-badge {
             width: 50px;
             height: 50px;
