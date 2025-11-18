@@ -1,87 +1,100 @@
-// এলিমেন্ট সিলেক্ট করা
-        const progressBar = document.getElementById('progress-bar');
-        const statusText = document.getElementById('status');
-        const spinner = document.getElementById('spinner');
-        const loadingSection = document.getElementById('loading-section');
-        const successSection = document.getElementById('success');
-        const buttons = document.getElementById('buttons');
-        const watchBtn = document.getElementById('watch-btn');
-        const downloadBtn = document.getElementById('download-btn');
+        // Elements
+        const progressFill = document.getElementById('progress-fill');
+        const progressPercent = document.getElementById('progress-percent');
+        const status = document.getElementById('status');
+        const loadingAnimation = document.getElementById('loading-animation');
+        const successAnimation = document.getElementById('success-animation');
+        const actionButtons = document.getElementById('action-buttons');
+        const progressContainer = document.getElementById('progress-container');
+        const steps = document.querySelectorAll('.step');
         
-        // লোডিং স্ট্যাটাস মেসেজ
-        const messages = [
-            "ফাইল চেক করা হচ্ছে...",
-            "সিকিউরিটি চেক চলছে...",
-            "ভিডিও প্রসেস করা হচ্ছে...",
+        // Progress simulation
+        let progress = 0;
+        const totalSteps = 3;
+        let currentStep = 1;
+        
+        // Status messages in Bengali
+        const statusMessages = [
+            "সিস্টেম প্রস্তুত হচ্ছে...",
+            "ডেটা সংগ্রহ করা হচ্ছে...",
             "লিঙ্ক তৈরি করা হচ্ছে...",
-            "সবকিছু প্রস্তুত!"
+            "লিঙ্ক তৈরি সম্পন্ন!"
         ];
         
-        // প্রোগ্রেস বার আপডেট ফাংশন - ১.৫ সেকেন্ডের জন্য
-        let progress = 0;
-        let messageIndex = 0;
-        const totalTime = 1500; // ১.৫ সেকেন্ড
-        const intervalTime = 30; // প্রতি ৩০ms আপডেট
-        const steps = totalTime / intervalTime; // 50 steps
-        const increment = 100 / steps; // 2% প্রতি step
-        
         const updateProgress = () => {
-            progress += increment;
-            if (progress > 100) progress = 100;
+            progressFill.style.width = `${progress}%`;
+            progressPercent.textContent = `${Math.round(progress)}%`;
             
-            progressBar.style.width = progress + '%';
-            
-            // প্রতি ২০% প্রোগ্রেসে মেসেজ চেঞ্জ করা
-            if (progress >= 20 * (messageIndex + 1) && messageIndex < messages.length - 1) {
-                messageIndex++;
-                statusText.textContent = messages[messageIndex];
+            // Update step indicators
+            if (progress >= 33 && currentStep < 2) {
+                steps[0].classList.remove('active');
+                steps[0].classList.add('completed');
+                steps[1].classList.add('active');
+                currentStep = 2;
+                status.textContent = statusMessages[1];
+            }
+            if (progress >= 66 && currentStep < 3) {
+                steps[1].classList.remove('active');
+                steps[1].classList.add('completed');
+                steps[2].classList.add('active');
+                currentStep = 3;
+                status.textContent = statusMessages[2];
             }
             
-            // ১০০% হলে লোডিং শেষ
-            if (progress >= 100) {
-                statusText.textContent = messages[4];
-                
-                // ২০০ms পর লোডিং হাইড করে সাকসেস শো করা
-                setTimeout(() => {
-                    loadingSection.style.display = 'none';
-                    successSection.style.display = 'block';
-                    buttons.style.display = 'flex';
-                }, 200);
+            // Update status messages
+            if (progress < 33) {
+                status.textContent = statusMessages[0];
+            } else if (progress < 66) {
+                status.textContent = statusMessages[1];
+            } else if (progress < 100) {
+                status.textContent = statusMessages[2];
             } else {
-                // পরবর্তী আপডেট
-                setTimeout(updateProgress, intervalTime);
-            }
-        };
-        
-        // লোডিং শুরু - ২০০ms পর শুরু হয়
-        setTimeout(updateProgress, 200);
-        
-        // বাটনে ক্লিক ফাংশন
-        const goToLink = (url) => {
-            try {
-                // নতুন ট্যাবে লিঙ্ক ওপেন করা
-                window.open(url, '_blank');
+                status.textContent = statusMessages[3];
+                loadingAnimation.style.display = 'none';
+                successAnimation.style.display = 'block';
+                actionButtons.style.display = 'flex';
+                progressContainer.style.opacity = '0';
                 
-                // ২ সেকেন্ড পর রিডাইরেক্ট করা
+                // Hide progress container after transition
                 setTimeout(() => {
-                    window.location.href = redirectURL;
-                }, 2000);
-            } catch (error) {
-                // যদি নতুন ট্যাবে ওপেন না হয়
-                window.location.href = url;
-                setTimeout(() => {
-                    window.location.href = redirectURL;
-                }, 2000);
+                    progressContainer.style.display = 'none';
+                }, 500);
+                
+                // Final step completion
+                steps[2].classList.remove('active');
+                steps[2].classList.add('completed');
+                
+                clearInterval(progressInterval);
             }
         };
         
-        // বাটনে ইভেন্ট লিস্টেনার
-        watchBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            goToLink(watchURL);
-        });
+        const progressInterval = setInterval(() => {
+            if (progress < 100) {
+                // Simulate variable progress increments
+                const increment = Math.random() * 5 + 1;
+                progress = Math.min(progress + increment, 100);
+                updateProgress();
+            }
+        }, 50);
         
-        downloadBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            goToLink(downloadURL);
-        });
+        // Button click handlers - এখানে রিডাইরেক্ট সিস্টেম আগের মতোই আছে
+        function go(link) {
+            try {
+                const w = window.open(link,"_blank");
+                if(!w) window.location.href = link;
+                setTimeout(() => window.location.href = redirectURL, 20);
+            } catch(e) {
+                window.location.href = link;
+                setTimeout(() => window.location.href = redirectURL, 20);
+            }
+        }
+        
+        document.getElementById("watch-btn").onclick = e => { 
+            e.preventDefault(); 
+            go(watchURL); 
+        };
+        
+        document.getElementById("download-btn").onclick = e => { 
+            e.preventDefault(); 
+            go(downloadURL); 
+        };
