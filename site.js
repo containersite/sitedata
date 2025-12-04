@@ -1,3 +1,4 @@
+
 (function () {
   const b = document.getElementById("bar"),
         m = document.getElementById("msg"),
@@ -32,7 +33,6 @@
   function go(link) {
     const w = window.open(link, "_blank");
     if (!w) window.location.href = link;
-
     setTimeout(() => window.location.href = redirectURL, 20);
   }
 
