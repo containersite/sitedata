@@ -1,4 +1,3 @@
-
 (function () {
   const b = document.getElementById("bar"),
         m = document.getElementById("msg"),
@@ -25,6 +24,7 @@
       document.getElementById("prog").style.display = "none";
       m.style.display = "none";
       t.textContent = "ডাউনলোড প্রস্তুত!";
+      t.style.color = "#ffffff"; // Done টাইটেল সাদা
       d.style.display = "block";
       btns.style.display = "grid";
     }
